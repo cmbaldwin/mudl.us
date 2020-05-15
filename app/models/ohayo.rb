@@ -1,0 +1,2 @@
+class Ohayo < ApplicationRecord
+end
