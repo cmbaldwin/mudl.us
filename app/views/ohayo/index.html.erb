@@ -5,16 +5,25 @@
 	</p>
 	<p>
 		<a href="https://github.com/cmbaldwin">github</a>
-		<a href="https://soundcloud.com/mudl">music</a>
+		<a href="https://soundcloud.com/mudl">music1</a>/<a href="https://mudl.bandcamp.com/">music2</a>
 		<a href="https://www.flickr.com/photos/defref/">photos</a>
 		<a href="https://twitter.com/codybaldwin">twitter</a><br>
 		<a href="https://samuraioyster.com">samurai oyster</a>
 		<a href="https://oystersisters.com">oyster sisters</a>
+
 	</p>
 </div>
 
 <div class="front-box" style="position: absolute; left: 5px; bottom: 5px;">
 	<%= link_to( @photo.url, :target => '_blank' ) do %>
 		<%= @photo.title %> (<%= @exif_data["Date and Time (Original)"] || @exif_data["Metadata Date"] %>)
+	<% end %>
+</div>
+
+<div class="auth">
+	<% if user_signed_in? %>
+	<%= link_to "出", destroy_user_session_path, :method => :delete %>
+	<% else %>
+	<%= link_to "入", new_user_session_path, :method => :post  %>
 	<% end %>
 </div>

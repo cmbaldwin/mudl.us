@@ -11,7 +11,10 @@ default: &default
 
 development:
   <<: *default
-  database: mudlus
+  # To pull database from Heroku, run:
+  # rake db:drop
+  # heroku pg:pull database yyyymmdd_backup
+  database: 20200529_backup
   username: root
   password: root
   host: localhost

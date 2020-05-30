@@ -1,0 +1,132 @@
+<%= form_with(model: tweet, local: true) do |form| %>
+  <% if tweet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tweet.errors.count, "error") %> prohibited this tweet from being saved:</h2>
+
+      <ul>
+        <% tweet.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :created_at %>
+    <%= form.datetime_select :created_at %>
+  </div>
+
+  <div class="field">
+    <%= form.label :id %>
+    <%= form.number_field :id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :id_str %>
+    <%= form.text_field :id_str %>
+  </div>
+
+  <div class="field">
+    <%= form.label :text %>
+    <%= form.text_field :text %>
+  </div>
+
+  <div class="field">
+    <%= form.label :truncated %>
+    <%= form.check_box :truncated %>
+  </div>
+
+  <div class="field">
+    <%= form.label :entities %>
+    <%= form.text_area :entities %>
+  </div>
+
+  <div class="field">
+    <%= form.label :source %>
+    <%= form.text_field :source %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_reply_to_status_id %>
+    <%= form.number_field :in_reply_to_status_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_reply_to_status_id_str %>
+    <%= form.text_field :in_reply_to_status_id_str %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_reply_to_user_id %>
+    <%= form.number_field :in_reply_to_user_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_reply_to_user_id_str %>
+    <%= form.text_field :in_reply_to_user_id_str %>
+  </div>
+
+  <div class="field">
+    <%= form.label :in_reply_to_screen_name %>
+    <%= form.text_field :in_reply_to_screen_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :user %>
+    <%= form.text_area :user %>
+  </div>
+
+  <div class="field">
+    <%= form.label :geo %>
+    <%= form.text_area :geo %>
+  </div>
+
+  <div class="field">
+    <%= form.label :coordinates %>
+    <%= form.text_area :coordinates %>
+  </div>
+
+  <div class="field">
+    <%= form.label :place %>
+    <%= form.text_area :place %>
+  </div>
+
+  <div class="field">
+    <%= form.label :contributors %>
+    <%= form.text_area :contributors %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_quote_status %>
+    <%= form.check_box :is_quote_status %>
+  </div>
+
+  <div class="field">
+    <%= form.label :retweet_count %>
+    <%= form.number_field :retweet_count %>
+  </div>
+
+  <div class="field">
+    <%= form.label :favorite_count %>
+    <%= form.number_field :favorite_count %>
+  </div>
+
+  <div class="field">
+    <%= form.label :favorited %>
+    <%= form.check_box :favorited %>
+  </div>
+
+  <div class="field">
+    <%= form.label :retweeted %>
+    <%= form.check_box :retweeted %>
+  </div>
+
+  <div class="field">
+    <%= form.label :lang %>
+    <%= form.text_field :lang %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

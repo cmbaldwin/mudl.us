@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
-  resources :ohayos
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
- 
-  root 'ohayo#index'
+
+	devise_for :users, controllers: {
+				sessions: 'users/sessions'
+			}
+	resources :tweets
+	get '/tweets/tweet_results/(.:format)' => 'tweets#tweet_results', as: :tweet_results
+	post '/tweets/tweet_upload/(.:format)', as: :tweet_upload, to: 'tweets#tweet_upload'
+	resources :ohayos
+
+	root 'ohayo#index'
+
 end

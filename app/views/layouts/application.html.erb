@@ -10,7 +10,10 @@
   </head>
 
 
+
   <body style="<%= @photo_url ? 'background: url(' + @photo_url + ') no-repeat center center fixed; -webkit-background-size: contain; -moz-background-size: contain; -o-background-size: contain; background-size: contain; margin: 5px;' : () %>">
     <%= yield %>
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
   </body>
 </html>

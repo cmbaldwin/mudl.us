@@ -6,3 +6,14 @@
 	background-color: rgba(255, 255, 255, 0.75);
 	padding: .5em;
 }
+
+.auth {
+	position: absolute;
+	top: 0;
+	right: 0;
+	a, a:visited, a:active, a:hover {
+		background-color: white;
+		color: white;
+		text-decoration: none;
+	}
+}
