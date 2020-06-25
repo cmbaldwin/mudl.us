@@ -7,13 +7,28 @@
 	padding: .5em;
 }
 
+.front-box.bottom {
+	position: absolute;
+	left: 5px;
+	bottom: 5px;
+}
+
 .auth {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 10px;
+	right: 10px;
 	a, a:visited, a:active, a:hover {
-		background-color: white;
+		background-color: rgba(255, 255, 255, 0.75);
 		color: white;
 		text-decoration: none;
+	}
+	a.visible, a.visible:visited, a.visible:visited, a.visible:hover {
+		color: black;
+	}
+	a.visible:hover {
+		color: blue;
+	}
+	a.visible.exit:hover {
+		color: red;
 	}
 }

@@ -8,7 +8,7 @@ namespace :tweets do
 		config.dev_environment     = ENV['TWITTER_DEV_BASIC']
 	end
 
-	desc "Scrape max 3,200 recent tweets from your home timeline"
+	desc "Scrape recent 3,200 recent tweets from home timeline"
 	task :scrape_home => :environment do
 
 		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
@@ -26,6 +26,7 @@ namespace :tweets do
 					end
 					puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
 					new_tweet.save
+					ap new_tweet
 				end
 			end
 			(from_index == @tweets.last.id) ? (stop = true) : from_index = @tweets.last.id
@@ -33,7 +34,33 @@ namespace :tweets do
 
 	end
 
-	desc "Scrape entire history"
+	desc "Scrape recent 15,000 recent favorites, then delete the interaction from Twitter"
+	task :scrape_favorites => :environment do
+
+		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
+		puts DateTime.now.to_formatted_s(:rfc822) 
+		from_index = client.favorites(count: 1).last.id
+		stop = false
+		until stop
+			@tweets = client.favorites(count: 200, since_id: from_index)
+			puts 'Set from ' + @tweets.first.created_at.to_s + ' to ' + @tweets.last.created_at.to_s + '(' + @tweets.count.to_s + ')'
+			@tweets.each_with_index do |tweet, i|
+				unless Tweet.exists?(tweet.id)
+					new_tweet = Tweet.new
+					tweet.attrs.each do |key, val|
+						new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
+					end
+					puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
+					new_tweet.save
+					ap new_tweet
+				end
+			end
+			(from_index == @tweets.last.id) ? (stop = true) : from_index = @tweets.last.id
+		end
+
+	end
+
+	desc "Scrape recent tweets by user as search term"
 	task :scrape_search => :environment do
 
 		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
@@ -41,8 +68,17 @@ namespace :tweets do
 
 		@tweets = client.premium_search('codybaldwin', { maxResults: 100 }, { product: '30day' })
 		ap @tweets.attrs
-		@tweets.each do |tweet|
-			ap tweet.attrs
+		@tweets.each_with_index do |tweet, i|
+			unless Tweet.exists?(tweet.id)
+				new_tweet = Tweet.new
+				tweet.attrs.each do |key, val|
+					new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
+				end
+				puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
+				new_tweet.save
+			else
+				puts i.to_s + 'of ' + @tweets.count.to_s + ' was already saved'
+			end
 		end
 
 		puts 'Begun:'

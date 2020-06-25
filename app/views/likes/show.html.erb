@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Tweetid:</strong>
+  <%= @like.tweetId %>
+</p>
+
+<p>
+  <strong>Fulltext:</strong>
+  <%= @like.fullText %>
+</p>
+
+<p>
+  <strong>Expandedurl:</strong>
+  <%= @like.expandedUrl %>
+</p>
+
+<%= link_to 'Edit', edit_like_path(@like) %> |
+<%= link_to 'Back', likes_path %>
