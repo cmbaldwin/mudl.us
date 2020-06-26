@@ -4,7 +4,15 @@ class LikesController < ApplicationController
 	# GET /likes
 	# GET /likes.json
 	def index
-		@likes = Like.limit(50)
+		@likes = Like.limit(50).order(:created_at)
+
+		@client = Twitter::REST::Client.new do |config|
+			config.consumer_key  = ENV['TWITTER_API_KEY']
+			config.consumer_secret = ENV['TWITTER_API_SECRET']
+			config.access_token = ENV['TWITTER_ACCESS_TOKEN']
+			config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
+			config.dev_environment     = ENV['TWITTER_DEV_BASIC']
+		end
 	end
 
 	def like_upload

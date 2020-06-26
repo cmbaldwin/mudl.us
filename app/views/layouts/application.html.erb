@@ -9,7 +9,7 @@
 		<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 	</head>
 
-	<body style="<%= @photo_url ? 'background: url(' + @photo_url + ') no-repeat center center fixed; -webkit-background-size: contain; -moz-background-size: contain; -o-background-size: contain; background-size: contain; margin: 5px;' : () %>">
+	<%= body(@photo_url).html_safe %>
 		<div class="auth">
 			<% if user_signed_in? %>
 				<%= link_to "↑", root_path, class: 'visible' %> | 

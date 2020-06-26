@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 2020_06_25_012357) do
   create_table "likes", force: :cascade do |t|
     t.string "fullText"
     t.string "expandedUrl"
+    t.string "user_id"
+    t.string "screen_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

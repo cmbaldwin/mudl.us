@@ -6,7 +6,7 @@ class TweetsController < ApplicationController
 	# GET /tweets
 	# GET /tweets.json
 	def index
-		@tweets = Tweet.limit(20)
+		@tweets = Tweet.order(:created_at).last(50).reverse
 	end
 
 	def tweet_upload

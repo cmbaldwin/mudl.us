@@ -8,66 +8,54 @@ namespace :tweets do
 		config.dev_environment     = ENV['TWITTER_DEV_BASIC']
 	end
 
-	desc "Scrape recent 3,200 recent tweets from home timeline"
+	desc "Scrape 200 recent tweets from authenticated timeline"
 	task :scrape_home => :environment do
 
 		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
 		puts DateTime.now.to_formatted_s(:rfc822) 
-		from_index = client.user_timeline(ENV['TWITTER_USER'], count: 1).last.id
-		stop = false
-		until stop
-			@tweets = client.user_timeline(ENV['TWITTER_USER'], count: 200, include_rts: true, tweet_mode: 'extended', trim_user: true, max_id: from_index)
-			puts 'Set from ' + @tweets.first.created_at.to_s + ' to ' + @tweets.last.created_at.to_s + '(' + @tweets.count.to_s + ')'
-			@tweets.each_with_index do |tweet, i|
-				unless Tweet.exists?(tweet.id)
-					new_tweet = Tweet.new
-					tweet.attrs.each do |key, val|
-						new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
-					end
-					puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
-					new_tweet.save
-					ap new_tweet
+		@tweets = client.user_timeline(ENV['TWITTER_USER'], count: 200, include_rts: true, tweet_mode: 'extended', trim_user: true)
+		puts 'Set from ' + @tweets.first.created_at.to_s + ' to ' + @tweets.last.created_at.to_s + '(' + @tweets.count.to_s + ')'
+		@tweets.each_with_index do |tweet, i|
+			unless Tweet.exists?(tweet.id)
+				new_tweet = Tweet.new
+				tweet.attrs.each do |key, val|
+					new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
 				end
+				puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
+				new_tweet.save
 			end
-			(from_index == @tweets.last.id) ? (stop = true) : from_index = @tweets.last.id
 		end
 
 	end
 
-	desc "Scrape recent 15,000 recent favorites, then delete the interaction from Twitter"
-	task :scrape_favorites => :environment do
+	desc "Scrape recent 200 recent favorites from authenticated timeline"
+	task :scrape_likes => :environment do
 
 		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
 		puts DateTime.now.to_formatted_s(:rfc822) 
-		from_index = client.favorites(count: 1).last.id
-		stop = false
-		until stop
-			@tweets = client.favorites(count: 200, since_id: from_index)
-			puts 'Set from ' + @tweets.first.created_at.to_s + ' to ' + @tweets.last.created_at.to_s + '(' + @tweets.count.to_s + ')'
-			@tweets.each_with_index do |tweet, i|
-				unless Tweet.exists?(tweet.id)
-					new_tweet = Tweet.new
-					tweet.attrs.each do |key, val|
-						new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
-					end
-					puts 'saving ' + i.to_s + 'of ' + @tweets.count.to_s
-					new_tweet.save
-					ap new_tweet
-				end
+		@favorites = client.favorites(count: 200)
+		@favorites.each_with_index do |like, i|
+			unless Like.exists?(like.id)
+				new_like = Like.new
+				new_like.id = like.id.to_s
+				new_like.fullText = like.text
+				new_like.expandedUrl = "https://twitter.com/" + like.user.id.to_s + "/status/" + like.id.to_s
+				new_like.user_id = like.user.id.to_s
+				new_like.screen_name = like.user.screen_name
+				new_like.created_at = like.created_at
+				puts 'saving ' + i.to_s + 'of ' + @favorites.count.to_s
+				new_like.save
 			end
-			(from_index == @tweets.last.id) ? (stop = true) : from_index = @tweets.last.id
 		end
-
 	end
 
-	desc "Scrape recent tweets by user as search term"
+	desc "Scrape recent tweets by user as search term (saves interactions)"
 	task :scrape_search => :environment do
 
 		puts 'Beginning scrape of @' + ENV['TWITTER_USER']
 		start = DateTime.now.to_formatted_s(:rfc822) 
 
 		@tweets = client.premium_search('codybaldwin', { maxResults: 100 }, { product: '30day' })
-		ap @tweets.attrs
 		@tweets.each_with_index do |tweet, i|
 			unless Tweet.exists?(tweet.id)
 				new_tweet = Tweet.new
@@ -86,6 +74,10 @@ namespace :tweets do
 		puts 'Finished:'
 		puts DateTime.now.to_formatted_s(:rfc822) 
 
+	end
+
+	task :scrape => [:scrape_home, :scrape_likes, :scrape_search] do
+		puts "Twitter Scrape complete."
 	end
 
 end

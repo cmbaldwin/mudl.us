@@ -4,6 +4,8 @@ class CreateLikes < ActiveRecord::Migration[6.0]
       t.bigint :id, primary_key: true
       t.string :fullText
       t.string :expandedUrl
+      t.string :user_id
+      t.string :screen_name
 
       t.timestamps
     end
