@@ -18,7 +18,7 @@
 * Database creation/initialization
 	Production database is deployed by Heroku
 	Development database must be deployed manually (Instructions I used: https://www.guru99.com/postgresql-create-database.html)
-	Heroku the handles production database. Make sure to include passwords for the respective databases in .env file.
+	Heroku handles the production database. Make sure to include passwords for the respective databases in .env file.
 
 * How to run the test suite
 	Standard Ruby test suite. (Under development)
