@@ -1,7 +1,7 @@
 # mudl.us
 
 * Purpose:
-Liberate and give me control over my personal data from SNS companies and double as a personal landing page.
+Liberate and give a user control over their personal data from data sharing model SNS (just Twitter for now) and double as a personal landing page.
 
 ## specifications
 **Enviornment**
