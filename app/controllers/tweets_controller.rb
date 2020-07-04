@@ -14,21 +14,11 @@ class TweetsController < ApplicationController
 
 		tweets = JSON.parse((File.read(open(params[:js]))).gsub(/(window).(YTD).(tweet).(part)\d = /, ''))
 		puts 'Total tweets ' + tweets.count.to_s
-		tweets.each_with_index do |twhash, i|
-			tweet = twhash["tweet"]
-			id = tweet["id_str"].to_i
-			unless Tweet.exists?(id)
-				new_tweet = Tweet.new(id: id)
-				tweet.each do |key, val|
-					new_tweet.respond_to?(key) ? (new_tweet[key] = val) : ()
-					key == "full_text" ? new_tweet[:text] = val : ()
-				end
-				puts 'saving ' + i.to_s + 'of ' + tweets.count.to_s
-				new_tweet.save
-			end
+		if ProcessTwitterTweetsJob.perform_later tweets
+			redirect_to tweets_path, notice: '「tweet.js」を処理中です。しばらくお待ちください。'
+		else
+			redirect_to likes_path, notice: '「tweet.js」のエラーがありました。ファイルを確認お願い致します。'
 		end
-
-		redirect_to tweets_path
 	end
 
 	def tweet_results

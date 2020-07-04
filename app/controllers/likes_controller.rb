@@ -5,14 +5,6 @@ class LikesController < ApplicationController
 	# GET /likes.json
 	def index
 		@likes = Like.limit(50).order(:created_at)
-
-		@client = Twitter::REST::Client.new do |config|
-			config.consumer_key  = ENV['TWITTER_API_KEY']
-			config.consumer_secret = ENV['TWITTER_API_SECRET']
-			config.access_token = ENV['TWITTER_ACCESS_TOKEN']
-			config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
-			config.dev_environment     = ENV['TWITTER_DEV_BASIC']
-		end
 	end
 
 	def like_upload
@@ -20,23 +12,11 @@ class LikesController < ApplicationController
 
 		likes = JSON.parse((File.read(open(params[:js]))).gsub(/(window).(YTD).(like).(part)\d = /, ''))
 		puts 'Total likes ' + likes.count.to_s
-		likes.each_with_index do |like_hash, i|
-			like = like_hash["like"]
-			id = like["id_str"].to_i
-			unless Like.exists?(id)
-				new_like = Like.new(id: id)
-				like.each do |key, val|
-					key == "tweetId" ? new_like[:id] = val : ()
-					key == "fullText" ? new_like[:fullText] = val : ()
-					key == "expandedUrl" ? new_like[:expandedUrl] = val : ()
-					new_like.respond_to?(key) ? (new_like[key] = val) : ()
-				end
-				puts 'saving ' + i.to_s + 'of ' + likes.count.to_s
-				new_like.save
-			end
+		if ProcessTwitterLikesJob.perform_later likes
+			redirect_to likes_path, notice: '「like.js」を処理中です。しばらくお待ちください。'
+		else
+			redirect_to likes_path, notice: '「like.js」のエラーがありました。ファイルを確認お願い致します。'
 		end
-
-		redirect_to likes_path
 	end
 
 	def like_results

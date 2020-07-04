@@ -1,27 +1,20 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Tweets</h1>
 
 <hr>
 
 <div class="row"> 
-	<% used_columns = Array.new %>
-	<% 4.times do |time| %>	<% column = Array.new %>
-		<% @tweets.each {|tweet| (@tweets.index(tweet) % (4 - (time - 1)) == 0) ? (column << tweet) : () } %>
-		<% used_columns.each {|tweet| column.include?(tweet) ? column.delete(column.index(tweet)) : () } %>
-		<% column.each do |tweet| %>
-			<p class="cell">
-				<i><%= link_to(tweet.created_at, tweet_url(tweet)) %></i><br>
-				<b><%= tweet.user[:name] ? tweet.user[:name] : "codybaldwin" %></b><br>
-				<%= tweet.text %>
-			</p>
-		<% end %>
-		<% used_columns << column %>
+	<% @tweets.each do |tweet| %>
+		<p class="cell">
+			<i><%= link_to(tweet.created_at, tweet_url(tweet)) %></i><br>
+			<b><%= tweet.user[:name] ? tweet.user[:name] : "codybaldwin" %></b><br>
+			<%= tweet.text %>
+		</p>
 	<% end %>
 </div>
 
 <hr>
 
+Upload a 「tweet.js」 file, process all tweets in background:
 <%= form_tag tweet_upload_path, multipart: true do %>
 	<%= file_field_tag :js %>
 	<%= submit_tag "アップ" %>

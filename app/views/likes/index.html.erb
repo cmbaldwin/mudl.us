@@ -1,27 +1,20 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Likes</h1>
 
 <hr>
 
 <div class="row"> 
-	<% used_columns = Array.new %>
-	<% 4.times do |time| %>	<% column = Array.new %>
-		<% @likes.each {|like| (@likes.index(like) % (4 - (time - 1)) == 0) ? (column << like) : () } %>
-		<% used_columns.each {|like| column.include?(like) ? column.delete(column.index(like)) : () } %>
-		<% column.each do |like| %>
-			<p class="cell">
-				<i><%= link_to(like.created_at, like.expandedUrl) %></i><br>
-				<b><%= like.screen_name %></b><br>
-				<%= like.fullText %><br>
-			</p>
-		<% end %>
-		<% used_columns << column %>
+	<% @likes.each do |like| %>
+		<p class="cell">
+			<i><%= link_to(like.created_at, like.expandedUrl) %></i><br>
+			<b><%= like.screen_name %></b><br>
+			<%= like.fullText %><br>
+		</p>
 	<% end %>
 </div>
 
 <hr>
 
+Upload a 「like.js」 file, process all likes in background:
 <%= form_tag like_upload_path, multipart: true do %>
 	<%= file_field_tag :js %>
 	<%= submit_tag "アップ" %>

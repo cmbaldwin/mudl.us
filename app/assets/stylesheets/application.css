@@ -15,27 +15,36 @@
  */
 
 .row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0 4px;
 }
 .cell {
-  width: 280px;
-  padding: 0 4px;
+	width: 280px;
+	padding: 0 4px;
 }
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
-  .column {
-    flex: 50%;
-    max-width: 50%;
-  }
+	.column {
+		flex: 50%;
+		max-width: 50%;
+	}
 }
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
 @media (max-width: 600px) {
-  .column {
-    flex: 100%;
-    max-width: 100%;
-  }
+	.column {
+		flex: 100%;
+		max-width: 100%;
+	}
+}
+
+.notice, .alert {
+	display: block;
+	bottom: 15px;
+	right: 15px;
+	background-color: rgba(200, 250, 0, 0.45);
+	padding: 15px;
+	border-radius: 15px;
+	position: fixed;
 }
