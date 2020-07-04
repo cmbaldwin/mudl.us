@@ -24,11 +24,16 @@ Development database must be deployed manually (Instructions I used: https://www
 Heroku handles the production database. Make sure to include passwords for the respective databases in .env file.
 
 **How to run the test suite**
-Standard Ruby test suite. (Under Development)
+(Under Development)
 
 **Services (job queues, cache servers, search engines, etc.)**
-Devise (for simple admin authentication, specify admin in .env file)
-Twitter (for scraping--use Scheduler to schedule the task)
+* Devise (for simple admin authentication, specify admin in .env file)
+* Twitter (Backup all favorites and tweets from downloaded archive [tweet.js and like.js, respctively], scrape API every 10 minutes for updates after that.)
+* Flickr (for front page photos)
+
+**Future plans for Integration**
+* Twitter: User setting to delete scraped tweets, unretweet, and unfavorite after a specific time period (you own your history).
+* Instagram/Facebook history integration (same as Twitter).
 
 **Further instructions**
 * Standard Heroku Deployment, this can be run on a single web hobby dyno (7 dollars a month) on your own domain. See guide at: https://devcenter.heroku.com/articles/getting-started-with-rails5#deploy-your-application-to-heroku for a good place to start.
