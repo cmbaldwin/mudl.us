@@ -2,15 +2,26 @@
 
 <hr>
 
-<div class="row"> 
+<%= form_tag(likes_path, method: :get) do %>
+	<%= text_field_tag :term, params[:term] %>
+	<%= submit_tag '検索', name: nil %>
+<% end %>
+
+<hr>
+
+<div class="row">
 	<% @likes.each do |like| %>
 		<p class="cell">
-			<i><%= link_to(like.created_at, like.expandedUrl) %></i><br>
+			<i><%= link_to(like.created_at, like.url) %></i><br>
 			<b><%= like.screen_name %></b><br>
-			<%= like.fullText %><br>
+			<%= like.full_text %><br>
 		</p>
 	<% end %>
 </div>
+
+<hr>
+
+<%= paginate @likes %>
 
 <hr>
 

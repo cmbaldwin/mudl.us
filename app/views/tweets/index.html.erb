@@ -2,11 +2,18 @@
 
 <hr>
 
-<div class="row"> 
+<%= form_tag(tweets_path, method: :get) do %>
+	<%= text_field_tag :term, params[:term] %>
+	<%= submit_tag '検索', name: nil %>
+<% end %>
+
+<hr>
+
+<div class="row">
 	<% @tweets.each do |tweet| %>
 		<p class="cell">
-			<i><%= link_to(tweet.created_at, tweet_url(tweet)) %></i><br>
-			<b><%= tweet.user[:name] ? tweet.user[:name] : "codybaldwin" %></b><br>
+			<i><%= link_to(tweet.created_at, tweet.url) %></i><br>
+			<b><%= ENV['TWITTER_USER'] %></b><br>
 			<%= tweet.text %>
 		</p>
 	<% end %>
@@ -14,6 +21,9 @@
 
 <hr>
 
+<%= paginate @tweets %>
+
+<hr>
 Upload a 「tweet.js」 file, process all tweets in background:
 <%= form_tag tweet_upload_path, multipart: true do %>
 	<%= file_field_tag :js %>

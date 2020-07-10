@@ -4,7 +4,7 @@ class LikesController < ApplicationController
 	# GET /likes
 	# GET /likes.json
 	def index
-		@likes = Like.limit(50).order(:created_at)
+		@likes = Like.search(params[:term]).page params[:page]
 	end
 
 	def like_upload

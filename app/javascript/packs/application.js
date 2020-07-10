@@ -15,9 +15,8 @@ require("jquery")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
-// 
 
-$(document).on('turbolinks:load', function(){
+$(document).ready(function() {
 	setTimeout(function(){
 		$('.notice .alert').fadeOut();
 	}, 2000);

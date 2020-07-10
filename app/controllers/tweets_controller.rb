@@ -6,7 +6,7 @@ class TweetsController < ApplicationController
 	# GET /tweets
 	# GET /tweets.json
 	def index
-		@tweets = Tweet.order(:created_at).last(50).reverse
+		@tweets = Tweet.search(params[:term]).page params[:page]
 	end
 
 	def tweet_upload
@@ -17,7 +17,7 @@ class TweetsController < ApplicationController
 		if ProcessTwitterTweetsJob.perform_later tweets
 			redirect_to tweets_path, notice: '「tweet.js」を処理中です。しばらくお待ちください。'
 		else
-			redirect_to likes_path, notice: '「tweet.js」のエラーがありました。ファイルを確認お願い致します。'
+			redirect_to tweets_path, notice: '「tweet.js」のエラーがありました。ファイルを確認お願い致します。'
 		end
 	end
 

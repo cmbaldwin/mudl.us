@@ -65,6 +65,7 @@ gem 'flickr.rb'
 
 # Twitter logging
 gem 'twitter'
+gem 'kaminari'
 
 # Authentication
 gem 'devise'

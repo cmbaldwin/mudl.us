@@ -10,7 +10,7 @@ class ProcessTwitterLikesJob < ApplicationJob
 			config.access_token_secret = ENV['TWITTER_ACCESS_TOKEN_SECRET']
 			config.dev_environment  = ENV['TWITTER_DEV_BASIC']
 		end
-		
+
 		seperated_ids = Array.new
 		data_by_id = Hash.new
 		skipped_ids = Array.new
@@ -32,7 +32,7 @@ class ProcessTwitterLikesJob < ApplicationJob
 			rescue
 				begin
 					# rate limit hit by time?
-					sleep(5.seconds) 
+					sleep(5.seconds)
 					tweets = client.statuses(likes)
 				rescue
 					# API rate limit hit
@@ -59,7 +59,7 @@ class ProcessTwitterLikesJob < ApplicationJob
 						rescue
 							begin
 								# rate limit hit by time?
-								sleep(5.seconds) 
+								sleep(5.seconds)
 								full_text = client.oembed(id).html.gsub("<br>", "\n").gsub(/<[^>]*>/, '')
 							rescue
 								# API rate limit hit
@@ -72,7 +72,7 @@ class ProcessTwitterLikesJob < ApplicationJob
 					end
 					new_like = Like.new
 					new_like.id = id
-					new_like.fullText = full_text
+					new_like.full_text = full_text
 					new_like.expandedUrl = url
 					new_like.user_id = user_id
 					new_like.screen_name = screen_name
@@ -91,7 +91,7 @@ class ProcessTwitterLikesJob < ApplicationJob
 					tweet = data_by_id[id]
 					new_like = Like.new
 					new_like.id = id
-					new_like.fullText = tweet["fullText"]
+					new_like.full_text = tweet["fullText"]
 					new_like.expandedUrl = tweet["expandedUrl"]
 					puts 'saving ' + i.to_s + 'of ' + not_found_ids.count.to_s
 					new_like.save
