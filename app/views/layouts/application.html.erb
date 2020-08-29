@@ -11,11 +11,11 @@
 
 	<%= body(@photo_url).html_safe %>
 		<div class="auth">
+				<%= link_to "↑", root_path %> |
+				<%= link_to "鳥", tweets_path %> |
+				<%= link_to "♡", likes_path %> |
 			<% if user_signed_in? %>
-				<%= link_to "↑", root_path, class: 'visible' %> | 
-				<%= link_to "鳥", tweets_path, class: 'visible' %> | 
-				<%= link_to "♡", likes_path, class: 'visible' %> | 
-				<%= link_to "出", destroy_user_session_path, :method => :delete, class: 'visible exit' %>
+				<%= link_to "出", destroy_user_session_path, :method => :delete, class: 'exit' %>
 			<% else %>
 				<%= link_to "入", new_user_session_path, :method => :post  %>
 			<% end %>

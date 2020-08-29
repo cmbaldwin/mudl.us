@@ -1,12 +1,15 @@
 class TweetsController < ApplicationController
 	before_action :set_tweet, only: [:show, :edit, :update, :destroy]
-	before_action :authenticate_user!
-	before_action :admin?
+	before_action :authenticate_user!, only: [:edit, :update, :destroy, :tweet_results, :display_change]
 
 	# GET /tweets
 	# GET /tweets.json
 	def index
-		@tweets = Tweet.search(params[:term]).page params[:page]
+		if user_signed_in?
+			@tweets = Tweet.search(params[:term]).page params[:page]
+		else
+			@tweets = Tweet.where(display: true).search(params[:term]).page params[:page]
+		end
 	end
 
 	def tweet_upload
@@ -23,6 +26,14 @@ class TweetsController < ApplicationController
 
 	def tweet_results
 
+	end
+
+	def display_change
+		Tweet.where(id: tweet_params[:tweet_ids]).each do |tweet|
+			tweet.display = true
+			tweet.save
+		end
+		redirect_to tweets_path, notice: '表示設定反映しました。'
 	end
 
 	# GET /tweets/1
@@ -87,6 +98,6 @@ class TweetsController < ApplicationController
 
 		# Only allow a list of trusted parameters through.
 		def tweet_params
-			params.require(:tweet).permit(:created_at, :id, :id_str, :text, :truncated, :entities, :source, :in_reply_to_status_id, :in_reply_to_status_id_str, :in_reply_to_user_id, :in_reply_to_user_id_str, :in_reply_to_screen_name, :user, :geo, :coordinates, :place, :contributors, :is_quote_status, :retweet_count, :favorite_count, :favorited, :retweeted, :lang)
+			params.require(:tweet).permit(:created_at, :id, :id_str, :text, :truncated, :entities, :source, :in_reply_to_status_id, :in_reply_to_status_id_str, :in_reply_to_user_id, :in_reply_to_user_id_str, :in_reply_to_screen_name, :user, :geo, :coordinates, :place, :contributors, :is_quote_status, :retweet_count, :favorite_count, :favorited, :retweeted, :lang, tweet_ids: [])
 		end
 end

@@ -1,10 +1,15 @@
 class LikesController < ApplicationController
 	before_action :set_like, only: [:show, :edit, :update, :destroy]
+	before_action :authenticate_user!, only: [:edit, :update, :destroy, :like_results, :display_change]
 
 	# GET /likes
 	# GET /likes.json
 	def index
-		@likes = Like.search(params[:term]).page params[:page]
+		if user_signed_in?
+			@likes = Like.search(params[:term]).page params[:page]
+		else
+			@likes = Like.where(display: true).search(params[:term]).page params[:page]
+		end
 	end
 
 	def like_upload
@@ -21,6 +26,14 @@ class LikesController < ApplicationController
 
 	def like_results
 
+	end
+
+	def display_change
+		Like.where(id: like_params[:like_ids]).each do |like|
+			like.display = true
+			like.save
+		end
+		redirect_to likes_path, notice: '表示設定反映しました。'
 	end
 
 	# GET /likes/1
@@ -85,6 +98,6 @@ class LikesController < ApplicationController
 
 		# Only allow a list of trusted parameters through.
 		def like_params
-			params.require(:like).permit(:tweetId, :fullText, :expandedUrl)
+			params.require(:like).permit(:tweetId, :fullText, :expandedUrl, like_ids: [])
 		end
 end

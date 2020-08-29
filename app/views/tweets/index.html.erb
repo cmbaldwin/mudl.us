@@ -2,30 +2,43 @@
 
 <hr>
 
-<%= form_tag(tweets_path, method: :get) do %>
-	<%= text_field_tag :term, params[:term] %>
-	<%= submit_tag '検索', name: nil %>
+<% if user_signed_in? %>
+
+	<%= form_tag(tweets_path, method: :get) do %>
+		<%= text_field_tag :term, params[:term] %>
+		<%= submit_tag '検索', name: nil %>
+	<% end %>
+
+	<hr>
+
 <% end %>
 
-<hr>
-
 <div class="row">
-	<% @tweets.each do |tweet| %>
-		<p class="cell">
-			<i><%= link_to(tweet.created_at, tweet.url) %></i><br>
-			<b><%= ENV['TWITTER_USER'] %></b><br>
-			<%= tweet.text %>
-		</p>
-	<% end %>
+		<%= form_tag display_tweets_path, method: :post, class: 'display' do %>
+			<%= submit_tag "更新", class: 'float-left' if user_signed_in? %>
+			<% @tweets.each do |tweet| %>
+				<p class="cell">
+					<%= (check_box_tag "tweet[tweet_ids][]", tweet.id, tweet.display, class: 'checkbox') if user_signed_in?
+					 %>
+					<i><%= link_to(tweet.created_at, tweet.url) %></i><br>
+					<b><%= ENV['TWITTER_USER'] %></b><br>
+					<%= tweet.text %>
+				</p>
+			<% end %>
+		<% end %>
 </div>
 
 <hr>
 
 <%= paginate @tweets %>
 
-<hr>
-Upload a 「tweet.js」 file, process all tweets in background:
-<%= form_tag tweet_upload_path, multipart: true do %>
-	<%= file_field_tag :js %>
-	<%= submit_tag "アップ" %>
+<% if user_signed_in? %>
+
+	<hr>
+	Upload a 「tweet.js」 file, process all tweets in background:
+	<%= form_tag tweet_upload_path, multipart: true do %>
+		<%= file_field_tag :js %>
+		<%= submit_tag "アップ" %>
+	<% end %>
+
 <% end %>

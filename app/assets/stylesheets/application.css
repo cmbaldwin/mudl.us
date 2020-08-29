@@ -23,6 +23,10 @@
 .cell {
 	width: 280px;
 	padding: 0 4px;
+	float: left;
+}
+.display {
+	width:  100%;
 }
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
