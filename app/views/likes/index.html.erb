@@ -22,7 +22,7 @@
 					 %>
 					<i><%= link_to(like.created_at, like.url) %></i><br>
 					<b><%= like.screen_name %></b><br>
-					<%= like.full_text %><br>
+					<%= (like.text_with_links).html_safe  %>
 				</p>
 			<% end %>
 		<% end %>

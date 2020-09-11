@@ -22,7 +22,7 @@
 					 %>
 					<i><%= link_to(tweet.created_at, tweet.url) %></i><br>
 					<b><%= ENV['TWITTER_USER'] %></b><br>
-					<%= tweet.text %>
+					<%= (tweet.text_with_links).html_safe %><br>
 				</p>
 			<% end %>
 		<% end %>
