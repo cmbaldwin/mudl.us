@@ -5,11 +5,8 @@ class LikesController < ApplicationController
 	# GET /likes
 	# GET /likes.json
 	def index
-		if user_signed_in?
-			@likes = Like.search(params[:term]).page params[:page]
-		else
-			@likes = Like.where(display: true).search(params[:term]).page params[:page]
-		end
+		@likes = Like.search(params[:term]).page params[:page]
+		
 	end
 
 	def like_upload

@@ -1,44 +1,40 @@
-<h1>Tweets</h1>
+<%= javascript_pack_tag 'shuffle', 'data-turbolinks-track': 'reload' %>
 
-<hr>
+<div class="container">
+	<h1>Tweets</h1>
 
-<% if user_signed_in? %>
+	<div class="row shuffle-sizer" id="grid">
+		<% @tweets.each do |tweet| %>
+			<div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 shuffle-brick">
+				<div class="card mb-4">
+					<div class="card-body">
+						<b><%= ENV['TWITTER_USER'] %></b><br>
+						<%= (tweet.text_with_links).html_safe %><br>
+					</div>
+					<div class="card-footer">
+						<i><%= link_to tweet.created_at, tweet.url, class: 'small text-muted' %></i><br>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+
+	<hr>
 
 	<%= form_tag(tweets_path, method: :get) do %>
 		<%= text_field_tag :term, params[:term] %>
 		<%= submit_tag '検索', name: nil %>
 	<% end %>
+	<%= paginate @tweets %>
 
-	<hr>
+	<% if user_signed_in? && @tweets.nil? %>
 
-<% end %>
-
-<div class="row">
-		<%= form_tag display_tweets_path, method: :post, class: 'display' do %>
-			<%= submit_tag "更新", class: 'float-left' if user_signed_in? %>
-			<% @tweets.each do |tweet| %>
-				<p class="cell">
-					<%= (check_box_tag "tweet[tweet_ids][]", tweet.id, tweet.display, class: 'checkbox') if user_signed_in?
-					 %>
-					<i><%= link_to(tweet.created_at, tweet.url) %></i><br>
-					<b><%= ENV['TWITTER_USER'] %></b><br>
-					<%= (tweet.text_with_links).html_safe %><br>
-				</p>
-			<% end %>
+		<hr>
+		Upload a 「tweet.js」 file, process all tweets in background:
+		<%= form_tag tweet_upload_path, multipart: true do %>
+			<%= file_field_tag :js %>
+			<%= submit_tag "アップ" %>
 		<% end %>
-</div>
 
-<hr>
-
-<%= paginate @tweets %>
-
-<% if user_signed_in? %>
-
-	<hr>
-	Upload a 「tweet.js」 file, process all tweets in background:
-	<%= form_tag tweet_upload_path, multipart: true do %>
-		<%= file_field_tag :js %>
-		<%= submit_tag "アップ" %>
 	<% end %>
-
-<% end %>
+</div>

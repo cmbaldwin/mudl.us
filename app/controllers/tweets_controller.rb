@@ -5,11 +5,7 @@ class TweetsController < ApplicationController
 	# GET /tweets
 	# GET /tweets.json
 	def index
-		if user_signed_in?
-			@tweets = Tweet.search(params[:term]).page params[:page]
-		else
-			@tweets = Tweet.where(display: true).search(params[:term]).page params[:page]
-		end
+		@tweets = Tweet.search(params[:term]).page params[:page]
 	end
 
 	def tweet_upload

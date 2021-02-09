@@ -1,45 +1,28 @@
-<h1>Likes</h1>
+<%= javascript_pack_tag 'shuffle', 'data-turbolinks-track': 'reload' %>
 
-<hr>
+<div class="container">
+	<h1>Likes</h1>
 
-<% if user_signed_in? %>
+	<div class="row shuffle-sizer" id="grid">
+		<% @likes.each do |like| %>
+			<div class="col-sm-12 col-md-6 col-lg-3 shuffle-brick">
+				<div class="card mb-4">
+					<div class="card-body">
+						<b><%= like.screen_name %></b><br>
+						<%= (like.text_with_links).html_safe  %>
+					</div>
+					<div class="card-footer">
+						<i><%= link_to like.created_at, like.url, class: 'text-muted small' %></i><br>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+
+	<hr>
 
 	<%= form_tag(likes_path, method: :get) do %>
 		<%= text_field_tag :term, params[:term] %>
 		<%= submit_tag '検索', name: nil %>
 	<% end %>
-
-	<hr>
-
-<% end %>
-
-<div class="row">
-		<%= form_tag display_likes_path, method: :post, class: 'display' do %>
-			<%= submit_tag "更新", class: 'float-left' if user_signed_in? %>
-			<% @likes.each do |like| %>
-				<p class="cell">
-					<%= (check_box_tag "like[like_ids][]", like.id, like.display, class: 'checkbox') if user_signed_in?
-					 %>
-					<i><%= link_to(like.created_at, like.url) %></i><br>
-					<b><%= like.screen_name %></b><br>
-					<%= (like.text_with_links).html_safe  %>
-				</p>
-			<% end %>
-		<% end %>
-</div>
-
-<hr>
-
-<%= paginate @likes %>
-
-<% if user_signed_in? %>
-
-	<hr>
-
-	Upload a 「like.js」 file, process all likes in background:
-	<%= form_tag like_upload_path, multipart: true do %>
-		<%= file_field_tag :js %>
-		<%= submit_tag "アップ" %>
-	<% end %>
-
-<% end %>
+	<%= paginate @likes %>

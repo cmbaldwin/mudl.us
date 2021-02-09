@@ -1,6 +1,10 @@
 class OhayoController < ApplicationController
 
 	def index
+
+	end
+
+	def flickr_bg
 		require 'flickr'
 
 		flickr = Flickr.new(ENV['FLICKR_API_KEY'])
@@ -17,6 +21,7 @@ class OhayoController < ApplicationController
 			end
 		end
 
+		render partial: 'background_image'
 	end
 
 end

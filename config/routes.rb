@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 	resources :ohayos
 
 	root 'ohayo#index'
+	get :flickr_bg, controller: :ohayo
 
 	resources :tweets do
 		collection do

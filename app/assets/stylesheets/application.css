@@ -14,20 +14,6 @@
  *= require_self
  */
 
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	padding: 0 4px;
-}
-.cell {
-	width: 280px;
-	padding: 0 4px;
-	float: left;
-}
-.display {
-	width:  100%;
-}
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media (max-width: 800px) {
 	.column {
@@ -43,6 +29,7 @@
 	}
 }
 
+/* Notices and Alerts */
 .notice, .alert {
 	display: block;
 	bottom: 15px;

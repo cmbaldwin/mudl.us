@@ -63,12 +63,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'httparty'
 gem 'flickr.rb'
 
-# Link/URL to thumbnail (like Twitter)
-gem 'link_thumbnailer'
-
 # Twitter logging
 gem 'twitter'
 gem 'kaminari'
 
 # Authentication
 gem 'devise'
+
+# High Speed Background Modules
+gem 'render_async'
